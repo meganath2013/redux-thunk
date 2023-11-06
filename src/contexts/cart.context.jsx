@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useReducer } from 'react';
+import { createAction } from '../utils/reducer/reducers.utils';
 
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
@@ -37,6 +38,8 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 
 const clearCartItem = (cartItems, cartItemToClear) =>
   cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
+
+////////
 
 export const CartContext = createContext({
   isCartOpen: false,
@@ -110,21 +113,7 @@ export const CartProvider = ({ children }) => {
   //   setCartTotal(newCartTotal);
   // }, [cartItems]);
 
-  const updateCartItems = (newCartItems)=>{
 
-
-  const newCartCount = newCartItems.reduce(
-      (total, cartItem) => total + cartItem.quantity,0);
-
-  const newCartTotal = newCartItems.reduce(
-      (total, cartItem) => total + cartItem.quantity * cartItem.price,0);
- 
-      dispatch({type:CART_ACTION_TYPES.SET_CART_ITEMS, 
-        payload:{  
-        cartItems: newCartItems,
-        cartCount: newCartCount,
-        cartTotal: newCartTotal}})
-  }
 
   const addItemToCart = (productToAdd) => {
     const newCartItems= addCartItem(cartItems, productToAdd);
@@ -141,8 +130,26 @@ export const CartProvider = ({ children }) => {
     updateCartItems(newCartItems);
   };
 
+  const updateCartItems = (newCartItems)=>{
+
+
+    const newCartCount = newCartItems.reduce(
+        (total, cartItem) => total + cartItem.quantity,0);
+  
+    const newCartTotal = newCartItems.reduce(
+        (total, cartItem) => total + cartItem.quantity * cartItem.price,0);
+   
+        dispatch(
+          createAction(CART_ACTION_TYPES.SET_CART_ITEMS, 
+          {  
+          cartItems: newCartItems,
+          cartCount: newCartCount,
+          cartTotal: newCartTotal,
+          }));
+          }
+
   const setIsCartOpen=(bool)=>{
-    dispatch({type:CART_ACTION_TYPES.SET_IS_CART_OPEN,payload:bool})
+    dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN,bool));
   }
 
   const value = {
