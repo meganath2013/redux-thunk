@@ -9,14 +9,14 @@ export const CategoriesContext = createContext({
 export const CategoriesProvider = ({ children }) => {
   const [categoriesMap, setCategoriesMap] = useState({});
 
-  useEffect(() => {
-    const getCategoriesMap = async () => {
-      const categoryMap = await getCategoriesAndDocuments('categories');
-      setCategoriesMap(categoryMap);
-    };
+  // useEffect(() => {
+  //   const getCategoriesMap = async () => {
+  //     const categoryMap = await getCategoriesAndDocuments('categories');
+  //     setCategoriesMap(categoryMap);
+  //   };
 
-    getCategoriesMap();
-  }, []);
+  //   getCategoriesMap();
+  // }, []);
 
   const value = { categoriesMap };
   return (
